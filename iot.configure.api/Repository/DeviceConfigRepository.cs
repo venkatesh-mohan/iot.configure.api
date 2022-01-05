@@ -22,28 +22,31 @@ namespace iot.configure.api.Repository
 
 
 
-        public DeviceConfigDetails AddDeviceConfigDetails(DeviceConfigDetails deviceconfigdetails)
+        public void AddDeviceConfigDetails(Deviceconfig deviceconfig)
         {
             try
             {
-                _logger.LogInformation($"DeviceRepository.AddDevice: Start - Adding New device with {deviceconfigdetails}");
-                using (NpgsqlConnection conn = new NpgsqlConnection(_connectionString))
+                foreach (DeviceConfigDetails configDetails in deviceconfig.Inputlist)
                 {
-                    conn.Open();
-                    using (NpgsqlCommand command = new NpgsqlCommand("add_deviceconfig", conn))
+                    _logger.LogInformation($"DeviceRepository.AddDevice: Start - Adding New device with {deviceconfigdetails}");
+                    using (NpgsqlConnection conn = new NpgsqlConnection(_connectionString))
                     {
-                        command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("DeviceId", deviceconfigdetails.DeviceId);
-                        command.Parameters.AddWithValue("InputId", deviceconfigdetails.InputId);
-                        command.Parameters.AddWithValue("InputName", deviceconfigdetails.InputId);
-                        command.Parameters.AddWithValue("Coefficientvalue", deviceconfigdetails.CoefficientValue);
-                        command.Parameters.AddWithValue("IsConnected", deviceconfigdetails.IsInputConnected);
-                        deviceconfigdetails.DeviceId = Convert.ToInt32(command.ExecuteNonQuery());
-                        conn.Close();
-                    }
+                        conn.Open();
+                        using (NpgsqlCommand command = new NpgsqlCommand("add_deviceconfig", conn))
+                        {
+                            command.CommandType = CommandType.StoredProcedure;
+                            command.Parameters.AddWithValue("DeviceId", configDetails.DeviceId);
+                            command.Parameters.AddWithValue("InputId", configDetails.InputId);
+                            command.Parameters.AddWithValue("InputName", configDetails.InputId);
+                            command.Parameters.AddWithValue("Coefficientvalue", configDetails.CoefficientValue);
+                            command.Parameters.AddWithValue("IsConnected", configDetails.IsInputConnected);
+                            deviceconfigdetails.DeviceId = Convert.ToInt32(command.ExecuteNonQuery());
+                            conn.Close();
+                        }
 
+                    }
+                    _logger.LogInformation($"DeviceRepository.AddDeviceconfig:{deviceconfigdetails}");
                 }
-                _logger.LogInformation($"DeviceRepository.AddDeviceconfig:{deviceconfigdetails}");
             }
             catch (Exception ex)
             {

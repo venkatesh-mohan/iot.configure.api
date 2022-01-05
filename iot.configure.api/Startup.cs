@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using iot.configure.api.Repository;
+using iot.configure.api.services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -32,6 +34,8 @@ namespace iot.configure.api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "iot.configure.api", Version = "v1" });
             });
+            services.AddScoped<IDeviceCapabilityServices, DeviceCapabilityServices>();
+            services.AddScoped<IDeviceCapabilityRepository, DeviceCapabilityRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -19,6 +19,15 @@ namespace iot.configure.api.Controllers
     {
         private readonly IDeviceCapabilityServices _deviceCapabilityServices;
         private readonly ILogger<DeviceCapabilityController> _logger;
+
+        public DeviceCapabilityController(ILogger<DeviceCapabilityController> logger, IDeviceCapabilityServices deviceCapabilityServices)
+        {
+            _deviceCapabilityServices = deviceCapabilityServices;
+            _logger = logger;
+
+        }
+
+
         // GET: api/<DeviceCapabilityController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -27,11 +36,11 @@ namespace iot.configure.api.Controllers
         }
 
         // GET api/<DeviceCapabilityController>/5
-        [HttpGet("{id}")]
-        public string Get(long id)
+        [HttpGet("{mac}")]
+        public ActionResult Get(string mac)
         {
-            var devicemac = _deviceCapabilityServices.GetDeviceCapabilites(id);
-            return devicemac;
+            return Ok(_deviceCapabilityServices.GetDeviceCapabilites(mac));
+            
         }
 
         // POST api/<DeviceCapabilityController>

@@ -9,12 +9,17 @@ namespace iot.configure.api.services
 {
     public class DeviceConfigServices : IDeviceConfigServices
     {
-        IDeviceConfigRepository DeviceConfigRepository;
-        
+        IDeviceConfigRepository _deviceConfigRepository;
+
+        public DeviceConfigServices(IDeviceConfigRepository deviceConfigRepository)
+        {
+            _deviceConfigRepository = deviceConfigRepository;
+        }
+
 
         public DeviceConfigDetails AddDeviceConfigDetails(DeviceConfigDetails deviceconfigdetails)
         {
-            return DeviceConfigRepository.AddDeviceConfigDetails(deviceconfigdetails);
+            return _deviceConfigRepository.AddDeviceConfigDetails(deviceconfigdetails);
         }
     }
 }

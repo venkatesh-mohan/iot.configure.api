@@ -7,7 +7,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 using Npgsql;
-
+using iot.configure.api.Helpers;
+using Newtonsoft.Json;
 
 namespace iot.configure.api.Repository
 {
@@ -22,29 +23,30 @@ namespace iot.configure.api.Repository
         }
         
 
-        public string GetDeviceCapabilities(long id)
+        public DeviceCapability GetDeviceCapabilities(string mac)
         {
             
             DeviceCapability devicecapability = null;
 
             try
             {
-                _logger.LogInformation($"DeviceRepository.GetDeviceCapability: Start - Getting Device Mac For Given Device Id = {id}");
+                _logger.LogInformation($"DeviceRepository.GetDeviceCapability: Start - Getting Device Mac For Given Device Id = {mac}");
                 using (NpgsqlConnection conn = new NpgsqlConnection(_connectionString))
                 {
                     conn.Open();
-                    using (NpgsqlCommand command = new NpgsqlCommand("get_devicecapability", conn))
+                    using (NpgsqlCommand command = new NpgsqlCommand("public.usp_getdevicecapabilities", conn))
                     {
                         command.CommandType = CommandType.StoredProcedure;
-                        command.Parameters.AddWithValue("DeviceId", id);
+                        command.Parameters.AddWithValue("p_deviceid", Utility.HexToLong(mac));
                         using (NpgsqlDataReader dr = command.ExecuteReader())// command.ExecuteReaderAsync())
                         {
                             while (dr.Read())
                             {
                                 devicecapability = new DeviceCapability()
                                 {
-                                    DeviceId = Convert.ToInt32(dr["DeviceId"]),
-                                    Mac = Convert.ToString(dr["Mac"]),
+                                    DeviceId = Convert.ToInt64(dr["deviceid"]),
+                                    Mac = Convert.ToString(dr["serialnumber"]),
+                                    Inputlist = JsonConvert.DeserializeObject<List<DeviceInput>>(dr["capabilities"].ToString())
 
                                 };
 
@@ -53,7 +55,7 @@ namespace iot.configure.api.Repository
                     }
 
                 }
-                _logger.LogInformation($"DeviceRepository.GetDevice: End - Getting Device Mac For Given Device Id = {id}");
+                _logger.LogInformation($"DeviceRepository.GetDevice: End - Getting Device Mac For Given Device Id = {mac}");
             }
             catch (Exception ex)
             {
@@ -65,7 +67,7 @@ namespace iot.configure.api.Repository
                 }
                 _logger.LogError($"DeviceRepository.GetDevice : Exception - Device Name For Given id = {ex.Message},{innerEx}");
             }
-            return devicecapability.Mac;
+            return devicecapability;
         }
     }
 }

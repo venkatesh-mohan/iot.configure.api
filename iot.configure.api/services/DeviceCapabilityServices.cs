@@ -15,10 +15,10 @@ namespace iot.configure.api.services
         {
             _deviceCapabilityRepository = deviceCapabilityRepository;
         }
-        public String GetDeviceCapabilites(long id)
+        public DeviceCapability GetDeviceCapabilites(string mac)
         {
             
-            return _deviceCapabilityRepository.GetDeviceCapabilities(id);
+            return _deviceCapabilityRepository.GetDeviceCapabilities(mac);
         }
     }
 }

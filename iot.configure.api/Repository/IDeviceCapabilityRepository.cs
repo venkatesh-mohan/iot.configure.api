@@ -8,6 +8,6 @@ namespace iot.configure.api.Repository
 {
     public interface IDeviceCapabilityRepository
     {
-        public String GetDeviceCapabilities(long id);
+        DeviceCapability GetDeviceCapabilities(string mac);
     }
 }

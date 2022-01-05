@@ -12,6 +12,8 @@ namespace iot.configure.api.Models
 
         public int InputName { get; set; }
 
+        public int InputTypeId { get; set; }
+
         public decimal CoefficientValue { get; set; }
 
         public bool IsInputConnected { get; set; }
