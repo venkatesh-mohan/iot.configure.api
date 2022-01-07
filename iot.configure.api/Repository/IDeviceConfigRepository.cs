@@ -8,6 +8,6 @@ namespace iot.configure.api.Repository
 {
     public interface IDeviceConfigRepository
     {
-        public DeviceConfigDetails AddDeviceConfigDetails(DeviceConfigDetails deviceconfigdetails);
+        void AddDeviceConfigDetails(Deviceconfig deviceconfig);
     }
 }

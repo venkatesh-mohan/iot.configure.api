@@ -7,19 +7,19 @@ using iot.configure.api.Repository;
 
 namespace iot.configure.api.services
 {
-    public class DeviceConfigServices : IDeviceConfigServices
+    public class DeviceConfigService : IDeviceConfigService
     {
         IDeviceConfigRepository _deviceConfigRepository;
 
-        public DeviceConfigServices(IDeviceConfigRepository deviceConfigRepository)
+        public DeviceConfigService(IDeviceConfigRepository deviceConfigRepository)
         {
             _deviceConfigRepository = deviceConfigRepository;
         }
 
 
-        public DeviceConfigDetails AddDeviceConfigDetails(DeviceConfigDetails deviceconfigdetails)
+        public void AddDeviceConfigDetails(Deviceconfig deviceconfig)
         {
-            return _deviceConfigRepository.AddDeviceConfigDetails(deviceconfigdetails);
+            _deviceConfigRepository.AddDeviceConfigDetails(deviceconfig);
         }
     }
 }

@@ -6,7 +6,7 @@ using iot.configure.api.Models;
 
 namespace iot.configure.api.services
 {
-    public interface IDeviceCapabilityServices
+    public interface IDeviceCapabilityService
     {
         DeviceCapability GetDeviceCapabilites(string mac);
     }

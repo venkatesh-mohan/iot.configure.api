@@ -7,11 +7,11 @@ using iot.configure.api.Repository;
 
 namespace iot.configure.api.services
 {
-    public class DeviceCapabilityServices : IDeviceCapabilityServices
+    public class DeviceCapabilityService : IDeviceCapabilityService
     {
         private readonly IDeviceCapabilityRepository _deviceCapabilityRepository;
 
-        public DeviceCapabilityServices(IDeviceCapabilityRepository deviceCapabilityRepository)
+        public DeviceCapabilityService(IDeviceCapabilityRepository deviceCapabilityRepository)
         {
             _deviceCapabilityRepository = deviceCapabilityRepository;
         }

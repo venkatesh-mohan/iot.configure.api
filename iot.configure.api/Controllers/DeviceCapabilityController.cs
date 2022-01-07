@@ -17,10 +17,10 @@ namespace iot.configure.api.Controllers
     [ApiController]
     public class DeviceCapabilityController : ControllerBase
     {
-        private readonly IDeviceCapabilityServices _deviceCapabilityServices;
+        private readonly IDeviceCapabilityService _deviceCapabilityServices;
         private readonly ILogger<DeviceCapabilityController> _logger;
 
-        public DeviceCapabilityController(ILogger<DeviceCapabilityController> logger, IDeviceCapabilityServices deviceCapabilityServices)
+        public DeviceCapabilityController(ILogger<DeviceCapabilityController> logger, IDeviceCapabilityService deviceCapabilityServices)
         {
             _deviceCapabilityServices = deviceCapabilityServices;
             _logger = logger;

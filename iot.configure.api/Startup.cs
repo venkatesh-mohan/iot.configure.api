@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 
+
 namespace iot.configure.api
 {
     public class Startup
@@ -34,8 +35,10 @@ namespace iot.configure.api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "iot.configure.api", Version = "v1" });
             });
-            services.AddScoped<IDeviceCapabilityServices, DeviceCapabilityServices>();
+            services.AddScoped<IDeviceCapabilityService, DeviceCapabilityService>();
             services.AddScoped<IDeviceCapabilityRepository, DeviceCapabilityRepository>();
+            services.AddScoped<IDeviceConfigService, DeviceConfigService>();
+            services.AddScoped<IDeviceConfigRepository, DeviceConfigRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

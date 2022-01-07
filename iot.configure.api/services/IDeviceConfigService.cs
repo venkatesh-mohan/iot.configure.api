@@ -6,8 +6,8 @@ using iot.configure.api.Models;
 
 namespace iot.configure.api.services
 {
-    public interface IDeviceConfigServices
+    public interface IDeviceConfigService
     {
-        DeviceConfigDetails AddDeviceConfigDetails(DeviceConfigDetails deviceconfigdetails);
+        void AddDeviceConfigDetails(Deviceconfig deviceconfig);
     }
 }

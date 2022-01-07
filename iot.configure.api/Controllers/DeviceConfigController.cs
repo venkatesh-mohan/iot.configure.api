@@ -16,8 +16,17 @@ namespace iot.configure.api.Controllers
     [ApiController]
     public class DeviceConfigController : ControllerBase
     {
-        private readonly IDeviceConfigServices _deviceConfigServices;
+        private readonly IDeviceConfigService _deviceConfigServices;
         private readonly ILogger<DeviceConfigController> _logger;
+
+        public DeviceConfigController(ILogger<DeviceConfigController> logger, IDeviceConfigService deviceConfigServices)
+        {
+            _deviceConfigServices = deviceConfigServices;
+            _logger = logger;
+
+        }
+
+
         // GET: api/<DeviceConfigController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -34,9 +43,9 @@ namespace iot.configure.api.Controllers
 
         // POST api/<DeviceConfigController>
         [HttpPost]
-        public void Post([FromBody] DeviceConfigDetails deviceconfigdetails)
+        public void Post([FromBody] Deviceconfig deviceconfig)
         {
-            _deviceConfigServices.AddDeviceConfigDetails(deviceconfigdetails);
+            _deviceConfigServices.AddDeviceConfigDetails(deviceconfig);
         }
 
         // PUT api/<DeviceConfigController>/5

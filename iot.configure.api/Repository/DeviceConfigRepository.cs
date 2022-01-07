@@ -7,6 +7,7 @@ using System.Data;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using iot.configure.api.Models;
+using iot.configure.api.Helpers;
 
 namespace iot.configure.api.Repository
 {
@@ -28,37 +29,38 @@ namespace iot.configure.api.Repository
             {
                 foreach (DeviceConfigDetails configDetails in deviceconfig.Inputlist)
                 {
-                    _logger.LogInformation($"DeviceRepository.AddDevice: Start - Adding New device with {deviceconfigdetails}");
+                    _logger.LogInformation($"DeviceConfigRepository.AddDeviceConfigDetails: Start - Adding configuraation against device {deviceconfig.Mac}");
                     using (NpgsqlConnection conn = new NpgsqlConnection(_connectionString))
                     {
                         conn.Open();
-                        using (NpgsqlCommand command = new NpgsqlCommand("add_deviceconfig", conn))
+                        using (NpgsqlCommand command = new NpgsqlCommand("usp_insert_deviceconfig", conn))
                         {
                             command.CommandType = CommandType.StoredProcedure;
-                            command.Parameters.AddWithValue("DeviceId", configDetails.DeviceId);
-                            command.Parameters.AddWithValue("InputId", configDetails.InputId);
-                            command.Parameters.AddWithValue("InputName", configDetails.InputId);
-                            command.Parameters.AddWithValue("Coefficientvalue", configDetails.CoefficientValue);
-                            command.Parameters.AddWithValue("IsConnected", configDetails.IsInputConnected);
-                            deviceconfigdetails.DeviceId = Convert.ToInt32(command.ExecuteNonQuery());
+                            command.Parameters.AddWithValue("p_deviceid", Utility.HexToLong(deviceconfig.Mac));
+                            command.Parameters.AddWithValue("p_inputid", configDetails.InputId);
+                            command.Parameters.AddWithValue("p_inputypeid", configDetails.InputTypeId);
+                            command.Parameters.AddWithValue("p_inputname", configDetails.InputName);
+                            command.Parameters.AddWithValue("p_coeffcientvalue", configDetails.CoefficientValue);
+                            command.Parameters.AddWithValue("p_isinputconnected", configDetails.IsInputConnected);
+                            deviceconfig.DeviceId = Convert.ToInt64(command.ExecuteNonQuery());
                             conn.Close();
                         }
 
                     }
-                    _logger.LogInformation($"DeviceRepository.AddDeviceconfig:{deviceconfigdetails}");
+                    _logger.LogInformation($"DeviceConfigRepository.AddDeviceConfigDetails:{deviceconfig.Mac}");
                 }
             }
             catch (Exception ex)
             {
-                deviceconfigdetails = null;
+                deviceconfig = null;
                 string innerEx = "";
                 if (ex.InnerException != null)
                 {
                     innerEx += ",InnerException: " + ex.InnerException.Message;
                 }
-                _logger.LogError($"DeviceRepository.AddDevice : Exception - Add New Device {ex.Message},{innerEx}");
+                _logger.LogError($"DeviceConfigRepository.AddDeviceConfigDetails : Exception -  {ex.Message},{innerEx}");
             }
-            return deviceconfigdetails;
+            //return deviceconfig;
         }
     }
 }
